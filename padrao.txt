@@ -1,0 +1,29 @@
+CÓDIGO DO SISTEMA
+
+--- SETORES ---
+A - INTERNO
+B - LATARIA
+C - MECÂNICA
+D - ELÉTRICO
+
+--- TAMANHOS ---
+P - PEQUENO
+M - MÉDIO
+G - GRANDE
+
+--- CATEGORIAS DE VEÍCULO (COMPATIBILIDADE) ---
+E - ESPORTIVO
+C - COMUM
+U - SUV
+M - MASTER (TODOS OS TIPOS)
+
+--- FORMATO DO CÓDIGO ---
+(2 letras do nome)-(Letra do Setor)(Letra do Tamanho)(2 letras do País)
+
+Exemplo: BA-DMBR
+(BA = Bateria | D = Elétrico | M = Médio | BR = Brasil)
+
+--- COMPATIBILIDADE ---
+Indica em qual tipo de carro a peça deve ser usada. 
+A categoria "M" (Master) indica que a peça serve para todos os modelos.
+Exemplo na lista: [BA-DMBR] Bateria | Comp: M

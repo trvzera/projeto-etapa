@@ -1,0 +1,20 @@
+{
+    "CA-CPBR": {"produto": "Carburador", "quantidade": 15, "preco": 120.0, "tamanho": "P", "pais": "BR", "compatibilidade": "C"},
+    "ES-CGBR": {"produto": "Escapamento", "quantidade": 8, "preco": 85.0, "tamanho": "G", "pais": "AR", "compatibilidade": "U"},
+    "PA-BGBR": {"produto": "Para-Lamas", "quantidade": 12, "preco": 150.0, "tamanho": "G", "pais": "BR", "compatibilidade": "C"},
+    "MU-APBR": {"produto": "Multimidia", "quantidade": 10, "preco": 200.0, "tamanho": "P", "pais": "BR", "compatibilidade": "M"},
+    "CA-CGBR": {"produto": "Caixa de marcha", "quantidade": 5, "preco": 850.0, "tamanho": "G", "pais": "BR", "compatibilidade": "C"},
+    "PA-CPBR": {"produto": "Pastilhas de freio", "quantidade": 120, "preco": 45.0, "tamanho": "P", "pais": "BR", "compatibilidade": "C"},
+    "AN-APAR": {"produto": "Antena", "quantidade": 50, "preco": 15.0, "tamanho": "P", "pais": "AR", "compatibilidade": "M"},
+    "PN-CGAR": {"produto": "Pneu", "quantidade": 64, "preco": 110.0, "tamanho": "G", "pais": "AR", "compatibilidade": "U"},
+    "PI-CPAR": {"produto": "Pinça de freio", "quantidade": 40, "preco": 75.0, "tamanho": "P", "pais": "AR", "compatibilidade": "C"},
+    "CA-BMBR": {"produto": "Calota", "quantidade": 80, "preco": 35.0, "tamanho": "M", "pais": "BR", "compatibilidade": "C"},
+    "RE-BPBR": {"produto": "Retrovisores", "quantidade": 30, "preco": 40.0, "tamanho": "P", "pais": "BR", "compatibilidade": "C"},
+    "GR-BMBR": {"produto": "Grade do radiador", "quantidade": 15, "preco": 65.0, "tamanho": "M", "pais": "BR", "compatibilidade": "C"},
+    "OL-CPBR": {"produto": "Óleo de Motor", "quantidade": 150, "preco": 15.0, "tamanho": "P", "pais": "BR", "compatibilidade": "M"},
+    "FI-CPBR": {"produto": "Filtro de Óleo", "quantidade": 100, "preco": 8.0, "tamanho": "P", "pais": "BR", "compatibilidade": "M"},
+    "VE-CPBR": {"produto": "Vela de Ignição", "quantidade": 200, "preco": 5.0, "tamanho": "P", "pais": "BR", "compatibilidade": "M"},
+    "CO-CMBR": {"produto": "Correia Dentada", "quantidade": 40, "preco": 45.0, "tamanho": "M", "pais": "BR", "compatibilidade": "C"},
+    "BO-CMBR": {"produto": "Bomba d'água", "quantidade": 25, "preco": 60.0, "tamanho": "M", "pais": "BR", "compatibilidade": "C"},
+    "BA-DMBR": {"produto": "Bateria", "quantidade": 10, "preco": 500.0, "tamanho": "M", "pais": "BR", "compatibilidade": "M"}
+}
