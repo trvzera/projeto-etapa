@@ -23,7 +23,3 @@ M - MASTER (TODOS OS TIPOS)
 Exemplo: BA-DMBR
 (BA = Bateria | D = Elétrico | M = Médio | BR = Brasil)
 
---- COMPATIBILIDADE ---
-Indica em qual tipo de carro a peça deve ser usada. 
-A categoria "M" (Master) indica que a peça serve para todos os modelos.
-Exemplo na lista: [BA-DMBR] Bateria | Comp: M
