@@ -23,3 +23,12 @@ M - MASTER (TODOS OS TIPOS)
 Exemplo: BA-DMBR
 (BA = Bateria | D = Elétrico | M = Médio | BR = Brasil)
 
+
+* MUDANÇAS A SEREM FEITAS  {
+  - Adicionar campo de setor;
+  - Adicionar campo de fabricante;
+  - Adicionar campo data de fabricação;
+  - Adicionar campo de parte do carro (Ex: Painel, carroceria, suspensao, etc);
+  - Adicionar na função de remover estoque verificação de setor;
+  - Adaptar os códigos para um novo padrão.
+}
