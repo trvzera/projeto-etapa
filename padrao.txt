@@ -1,0 +1,34 @@
+CÓDIGO DO SISTEMA
+
+--- SETORES ---
+A - INTERNO
+B - LATARIA
+C - MECÂNICA
+D - ELÉTRICO
+
+--- TAMANHOS ---
+P - PEQUENO
+M - MÉDIO
+G - GRANDE
+
+--- CATEGORIAS DE VEÍCULO (COMPATIBILIDADE) ---
+E - ESPORTIVO
+C - COMUM
+U - SUV
+M - MASTER (TODOS OS TIPOS)
+
+--- FORMATO DO CÓDIGO ---
+(2 letras do nome)-(Letra do Setor)(Letra do Tamanho)(2 letras do País)
+
+Exemplo: BA-DMBR
+(BA = Bateria | D = Elétrico | M = Médio | BR = Brasil)
+
+
+* MUDANÇAS A SEREM FEITAS  {
+  - Adicionar campo de setor;
+  - Adicionar campo de fabricante;
+  - Adicionar campo data de fabricação;
+  - Adicionar campo de parte do carro (Ex: Painel, carroceria, suspensao, etc);
+  - Adicionar na função de remover estoque verificação de setor;
+  - Adaptar os códigos para um novo padrão.
+}
