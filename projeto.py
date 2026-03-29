@@ -14,32 +14,43 @@ estoque = carregar_json('banco.json', {})
 logins = carregar_json('logins.json', {})
 
 entradas = []
+saidas = []
+alteracoes = []
+
+cores = {
+    'vermelho': '\033[31m',
+    'verde': '\033[32m',
+    'azul': '\033[34m',
+    'amarelo': '\033[33m',
+    'reset': '\033[m',
+    'reverse': '\033[7m'
+}
 
 def login():
     usuario = input("Digite seu usuário: ")
     senha = input("Digite sua senha: ")
     if (usuario == logins['interno'] and senha == logins['senhaInterno']):
-        print("Login realizado com sucesso!")
+        print(f"{cores['verde']}Login realizado com sucesso!{cores['reset']}")
         slp(1)
-        return "interno"
+        return "INTERNO"
     elif (usuario == logins['lataria'] and senha == logins['senhaLataria']):
-        print("Login realizado com sucesso!")
+        print(f"{cores['verde']}Login realizado com sucesso!{cores['reset']}")
         slp(1)
-        return "lataria"
+        return "LATARIA"
     elif (usuario == logins['mecanica'] and senha == logins['senhaMecanica']):
-        print("Login realizado com sucesso!")
+        print(f"{cores['verde']}Login realizado com sucesso!{cores['reset']}")
         slp(1)
-        return "mecanica"
+        return "MECANICA"
     elif (usuario == logins['eletrico'] and senha == logins['senhaEletrico']):
-        print("Login realizado com sucesso!")
-        slp(1)
-        return "eletrico"
+        print(f"{cores['verde']}Login realizado com sucesso!{cores['reset']}")
+        slp(1)  
+        return "ELETRICO"
     elif (usuario == logins['admin'] and senha == logins['senhaAdmin']):
-        print("Login realizado com sucesso!")
+        print(f"{cores['verde']}Login realizado com sucesso!{cores['reset']}")
         slp(1)
-        return "admin"
+        return "ADMIN"
     else:
-        print("Usuário ou senha inválidos!")
+        print(f"{cores['vermelho']}Usuário ou senha inválidos!{cores['reset']}")
         return None
 
 def gerarCodigo(produto, setor, tamanho, pais):
@@ -60,7 +71,7 @@ def gerarCodigo(produto, setor, tamanho, pais):
     return codigo
 
 def menu(setor):
-    print(f"\nBem vindo ao sistema de estoque! (USUÁRIO: {setor.upper()})")
+    print(f"\nBem vindo ao sistema de estoque! (USUÁRIO: {cores['amarelo']}{setor.upper()}{cores['reset']})")
     print("--- MENU ---")
     slp(0.2)
     print("1. Consultar estoque")
@@ -73,11 +84,11 @@ def menu(setor):
     slp(0.2)
     print("5. Listar produtos")
     slp(0.2)
-    print("6. Listar entradas")
+    print("6. Listar Movimentações")
     slp(0.2)
     print("7. Como funciona o código do produto?")
     slp(0.2)
-    print("0. Sair")
+    print(f"{cores['reverse']}0. Sair {cores['reset']}")
     slp(0.2)
     print("-" * 30)
     opcao = input("Digite sua opção: ")
@@ -122,15 +133,15 @@ def consultarEstoque():
         escolha = input("Deseja fazer a conversao da moeda? (s/n): ").lower()
         if escolha == "s":
             if info['pais'] == "BRASIL":
-                print(f"Preço em Real: R${info['preco'] * taxaReal:.2f}")
+                print(f"{cores['verde']}Preço em Real: R${info['preco'] * taxaReal:.2f}{cores['reset']}")
             elif info['pais'] == "CHINA":
-                print(f"Preço em Yuan: ${info['preco'] * taxaYuan:.2f}")
+                print(f"{cores['vermelho']}Preço em Yuan: ${info['preco'] * taxaYuan:.2f}{cores['reset']}")
             elif info['pais'] == "FRANCA":
-                print(f"Preço em Euro: ${info['preco'] * taxaEuro:.2f}")
+                print(f"{cores['azul']}Preço em Euro: ${info['preco'] * taxaEuro:.2f}{cores['reset']}")
             elif info['pais'] == "CANADA":
-                print(f"Preço em Dólar Canadense: ${info['preco'] * taxaDol:.2f}")
+                print(f"{cores['vermelho']}Preço em Dólar Canadense: ${info['preco'] * taxaDol:.2f}{cores['reset']}")
     else:
-        print("Produto não encontrado!")
+        print(f"{cores['vermelho']}Produto não encontrado!{cores['reset']}")
     slp(1)
     return
 
@@ -142,11 +153,11 @@ def adicionarProduto(usuario_logado):
             ja_existe = True
             break
     if ja_existe:
-        print("Produto já cadastrado!")
+        print(f"{cores['vermelho']}Produto já cadastrado!{cores['reset']}")
         return
     setor = input("Digite o setor responsável (interno, lataria, mecanica, eletrico): ").lower()
-    if setor != usuario_logado.lower() and usuario_logado != "admin":
-        print(f"Você não tem permissão para o setor '{setor}'! Seu setor é '{usuario_logado}'.")
+    if setor != usuario_logado.upper() and usuario_logado != "ADMIN":
+        print(f"{cores['vermelho']}Você não tem permissão para o setor '{setor}'! Seu setor é '{usuario_logado}'.{cores['reset']}")
         return
     quantidade = int(input("Digite a quantidade: "))
     preco = float(input("Digite o preço: "))
@@ -173,12 +184,20 @@ def adicionarProduto(usuario_logado):
     }
     data_hora = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
     entradas.append({
+        "data_hora": data_hora,         
         "codigo": codigo,
         "produto": produto,
-        "data_hora": data_hora,
-        "quantidade": quantidade
+        "quantidade": quantidade,
+        "preco": preco,
+        "tamanho": tamanho,
+        "pais": pais,
+        "compatibilidade": compatibilidade,
+        "setor": setor.upper(),
+        "fabricante": fabricante,
+        "data_fabricacao": data_fab,
+        "parte": parte
     })
-    print(f"Produto adicionado com sucesso! Código: {codigo}")
+    print(f"{cores['verde']}Produto adicionado com sucesso! Código: {codigo}{cores['reset']}")
     slp(1)
     return
 
@@ -189,27 +208,41 @@ def removerProduto(usuario_logado):
     if termo in estoque:
         info = estoque[termo]
     else:
-        for dados in estoque.values():
+        for cod, dados in estoque.items():
             if dados['produto'].upper() == termo:
                 info = dados
+                codigo_produto = cod  
                 break
     
     if info:
-        print(f"Produto encontrado: {info['produto']} | Qtd atual: {info['quantidade']}")
-        quantidade = int(input("Digite a quantidade a ser removida: "))
-        if quantidade > info['quantidade']:
-            print("Erro: Quantidade solicitada maior que o estoque disponível!")
-            return
-        info['quantidade'] -= quantidade
-        print(f"Remoção realizada! Nova quantidade de {info['produto']}: {info['quantidade']}")
+        print(f"{cores['verde']}Produto encontrado: {info['produto']} | Qtd atual: {info['quantidade']}{cores['reset']}")
+        if info['setor'] != usuario_logado.upper() and usuario_logado != "ADMIN":
+            print(f"{cores['vermelho']}Você não tem permissão para o setor '{info['setor']}'! Seu setor é '{usuario_logado}'.{cores['reset']}")
+        else:
+            quantidade = int(input("Digite a quantidade a ser removida: "))
+            quant_antiga = info['quantidade']
+            if quantidade > info['quantidade']:
+                print(f"{cores['vermelho']}Erro: Quantidade solicitada maior que o estoque disponível!{cores['reset']}")
+                return
+            info['quantidade'] -= quantidade
+            print(f"{cores['verde']}Remoção realizada! Nova quantidade de {info['produto']}: {info['quantidade']}{cores['reset']}")
+            data_hora = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+            saidas.append({
+                "codigo": codigo_produto,
+                "produto": info['produto'],
+                "data_hora": data_hora,
+                "nova_quant": info['quantidade'],
+                "remocao": quantidade,
+                "quant_antiga": quant_antiga
+            })
     else:
-        print("Erro: Produto não encontrado!")
+        print(f"{cores['vermelho']}Erro: Produto não encontrado!{cores['reset']}")
 
 def atualizarProduto(usuario_logado):
     termo = input("Digite o código ou nome do produto que deseja atualizar: ").upper()
     info = None
     codigo_antigo = None
-    
+
     if termo in estoque:
         info = estoque[termo]
         codigo_antigo = termo
@@ -219,64 +252,107 @@ def atualizarProduto(usuario_logado):
                 info = dados
                 codigo_antigo = cod
                 break
-    if info:
-        novo_nome = input(f"Novo nome (atual: {info['produto']}): ")
-        if not novo_nome:
-            novo_nome = info['produto']
-            
-        nova_qtd = input(f"Nova quantidade (atual: {info['quantidade']}): ")
-        if nova_qtd:
-            nova_qtd = int(nova_qtd)
+
+        if info['setor'] != usuario_logado.upper() and usuario_logado != "ADMIN":
+            print(f"{cores['vermelho']}Você não tem permissão para o setor '{info['setor']}'! Seu setor é '{usuario_logado}'.{cores['reset']}")
         else:
-            nova_qtd = info['quantidade']
-            
-        novo_preco = input(f"Novo preço (atual: {info['preco']}): ")
-        if novo_preco:
-            novo_preco = float(novo_preco)
-        else:
-            novo_preco = info['preco']
-            
-        novo_tam = input(f"Novo tamanho (atual: {info.get('tamanho', '-')}, P, M, G): ").upper()
-        if not novo_tam:
-            novo_tam = info.get('tamanho', '-')
-            
-        novo_pais = input(f"Novo país (atual: {info.get('pais', '-')}, 2 letras): ").upper()
-        if not novo_pais:
-            novo_pais = info.get('pais', '-')
-        
-        compat_atual = info.get('compatibilidade', '-')
-        nova_compat = input(f"Nova compatibilidade (atual: {compat_atual}, E - Esportivo / C - Comum / U - SUV / M - Master): ").upper()
-        if not nova_compat:
-            nova_compat = compat_atual
-        
-        setor_origem = "interno"
-        if codigo_antigo and "-" in codigo_antigo:
-            setor_letra = codigo_antigo.split("-")[1][0]
-            if setor_letra == "A": setor_origem = "interno"
-            elif setor_letra == "B": setor_origem = "lataria"
-            elif setor_letra == "C": setor_origem = "mecanica"
-        
-        novo_codigo = gerarCodigo(novo_nome, setor_origem, novo_tam, novo_pais)
-        
-        if novo_codigo != codigo_antigo:
-            estoque.pop(codigo_antigo)
-            
-        estoque[novo_codigo] = {
-            "produto": novo_nome,
-            "quantidade": nova_qtd,
-            "preco": novo_preco,
-            "tamanho": novo_tam,
-            "pais": novo_pais,
-            "compatibilidade": nova_compat,
-            "setor": info.get('setor', setor_origem.upper()),
-            "fabricante": info.get('fabricante', '-'),
-            "data_fabricacao": info.get('data_fabricacao', '-'),
-            "parte": info.get('parte', '-')
-        }
-        
-        print(f"Produto atualizado com sucesso! Novo código: {novo_codigo}")
-    else:
-        print("Produto não encontrado!")
+            nome_antigo = info['produto']
+            quantidade_antiga = info['quantidade']
+            preco_antigo = info['preco']
+            tamanho_antigo = info['tamanho']
+            pais_antigo = info['pais']
+            compat_antigo = info['compatibilidade']
+            setor_antigo = info['setor']
+            fabricante_antigo = info['fabricante']
+            datafab_antiga = info['data_fabricacao']
+            parte_antiga = info['parte']
+            if info:
+                novo_nome = input(f"Novo nome (atual: {info['produto']}): ")
+                if not novo_nome:
+                    novo_nome = info['produto']
+                    
+                nova_qtd = input(f"Nova quantidade (atual: {info['quantidade']}): ")
+                if nova_qtd:
+                    nova_qtd = int(nova_qtd)
+                else:
+                    nova_qtd = info['quantidade']
+                    
+                novo_preco = input(f"Novo preço (atual: {info['preco']}): ")
+                if novo_preco:
+                    novo_preco = float(novo_preco)
+                else:
+                    novo_preco = info['preco']
+                    
+                novo_tam = input(f"Novo tamanho (atual: {info.get('tamanho', '-')}) (P, M, G): ").upper()
+                if not novo_tam:
+                    novo_tam = info.get('tamanho', '-')
+                    
+                novo_pais = input(f"Novo país (atual: {info.get('pais', '-')}): ").upper()
+                if not novo_pais:
+                    novo_pais = info.get('pais', '-')
+                
+                compat_atual = info.get('compatibilidade', '-')
+                nova_compat = input(f"Nova compatibilidade (atual: {compat_atual}) (E - Esportivo / C - Comum / U - SUV / M - Master): ").upper()
+                if not nova_compat:
+                    nova_compat = compat_atual
+                
+                novo_fabricante = input(f"Novo fabricante (atual: {info.get('fabricante', '-')}): ")
+                if not novo_fabricante:
+                    novo_fabricante = info.get('fabricante', '-')
+                
+                nova_datafab = input(f"Nova data de fabricação (atual: {info.get('data_fabricacao', '-')}) (AAAA-MM-DD): ")
+                if not nova_datafab:
+                    nova_datafab = info.get('data_fabricacao', '-')
+                
+                nova_parte = input(f"Nova parte (atual: {info.get('parte', '-')}): ").upper()
+                if not nova_parte:
+                    nova_parte = info.get('parte', '-')
+                
+                setor_origem = info['setor']
+                novo_codigo = gerarCodigo(novo_nome, setor_origem, novo_tam, novo_pais)
+                
+                if novo_codigo != codigo_antigo:
+                    estoque.pop(codigo_antigo)
+                    
+                estoque[novo_codigo] = {
+                    "produto": novo_nome,
+                    "quantidade": nova_qtd,
+                    "preco": novo_preco,
+                    "tamanho": novo_tam,
+                    "pais": novo_pais,
+                    "compatibilidade": nova_compat,
+                    "setor": info.get('setor', setor_origem.upper()),
+                    "fabricante": info.get('fabricante', '-'),
+                    "data_fabricacao": info.get('data_fabricacao', '-'),
+                    "parte": info.get('parte', '-')
+                }
+                alteracoes.append({
+                    "codigo": novo_codigo,
+                    "codigo_antigo": codigo_antigo,
+                    "produto": novo_nome,
+                    "nome_antigo": nome_antigo,
+                    "data_hora": datetime.now().strftime("%Y/%m/%d %H:%M:%S"),
+                    "nova_qtd": nova_qtd,
+                    "antiga_qtd": quantidade_antiga,
+                    "preco": novo_preco,
+                    "antigo_preco": preco_antigo,
+                    "tamanho": novo_tam,
+                    "antigo_tamanho": tamanho_antigo,
+                    "pais": novo_pais,
+                    "antigo_pais": pais_antigo,
+                    "compatibilidade": nova_compat,
+                    "antiga_compatibilidade": compat_antigo,
+                    "setor": info.get('setor', setor_origem.upper()),
+                    "fabricante": info.get('fabricante', '-'),
+                    "antigo_fabricante": fabricante_antigo,
+                    "data_fabricacao": info.get('data_fabricacao', '-'),
+                    "antiga_data_fabricacao": datafab_antiga,
+                    "parte": info.get('parte', '-'),
+                    "antiga_parte": parte_antiga
+                })
+                print(f"{cores['verde']}Produto atualizado com sucesso! Novo código: {novo_codigo}{cores['reset']}")
+            else:
+                print(f"{cores['vermelho']}Produto não encontrado!{cores['reset']}")
 
 def listarEstoque():
     print("\n" + "="*50)
@@ -284,32 +360,64 @@ def listarEstoque():
     print("="*50)
     for codigo, info in estoque.items():
         slp(0.1)
-        print(f"[{codigo}] {info['produto']:20} | Qtd: {info['quantidade']:3} | Preço: ${info['preco']:7.2f} | Tam: {info['tamanho']} | País: {info['pais']} | Compatibilidade: {info['compatibilidade']} | Fabricante: {info['fabricante']} | Data Fabricação: {info['data_fabricacao']} | Parte: {info['parte']}")
+        print(f"[{codigo}] {info['produto']:20} | Qtd: {info['quantidade']:3} | Preço: ${info['preco']:7.2f} | Tam: {info['tamanho']} | País: {info['pais']} | Comp: {info['compatibilidade']} | Fab: {info['fabricante']} | Data Fab: {info['data_fabricacao']} | Parte: {info['parte']}")
     print("="*50)
 
-def listarEntradas():
-    print("\n" + "="*50)
-    print("HISTÓRICO DE ENTRADAS".center(50))
-    print("="*50)
-    if not entradas:
-        print("Nenhuma entrada registrada nesta sessão.")
-    for e in entradas:
-        print(f"{e['data_hora']} | {e['codigo']} | {e['produto']:15} | Qtd: {e['quantidade']}")
-    print("="*50)
+def listarMovimentacoes(): #TODO
+    print("OPÇÕES: \n 1 - Entradas \n 2 - Saídas \n 3 - Alterações")
+    op = input("Qual você deseja conferir? ")
+    match op:
+        case "1":
+            print("\n" + "="*50)
+            print("HISTÓRICO DE ENTRADAS".center(50))
+            print("="*50)
+            if not entradas:
+                print(f"{cores['amarelo']}Nenhuma entrada registrada nesta sessão.{cores['reset']}")
+            for e in entradas:
+                print(f"{e['data_hora']} | {e['codigo']} | {e['produto']:15} | Qtd: {e['quantidade']} | Preço: ${e['preco']:7.2f} | Tam: {e['tamanho']} | País: {e['pais']} | Compatibilidade: {e['compatibilidade']} | Fabricante: {e['fabricante']} | Data Fabricação: {e['data_fabricacao']} | Parte: {e['parte']}")
+            print("="*50)
+            slp(1)
+        case "2":
+            print("\n" + "="*50)
+            print("HISTÓRICO DE SAÍDAS".center(50))
+            print("="*50)
+            if not saidas:
+                print(f"{cores['amarelo']}Nenhuma saída registrada nesta sessão.{cores['reset']}")
+            for e in saidas:
+                print(f"{e['data_hora']} | {e['codigo']} | {e['produto']:15} | Qtd Antiga: {e['quant_antiga']} | Remoção: {e['remocao']} | Qtd: {e['nova_quant']} |")
+            print("="*50)
+            slp(1)
+        case "3":
+            print("\n" + "="*50)
+            print("HISTÓRICO DE ALTERAÇÕES".center(50))
+            print("="*50)
+            if not alteracoes:
+                print(f"{cores['amarelo']}Nenhuma alteração registrada nesta sessão.{cores['reset']}")
+            for e in alteracoes:
+                print(f"ANTES DA ALTERAÇÃO: \n {e['data_hora']} | {e['codigo_antigo']} | {e['nome_antigo']:15} | Qtd: {e['antiga_qtd']} | Preço: ${e['antigo_preco']} | Tam: {e['antigo_tamanho']} | País: {e['antigo_pais']} | Compatibilidade: {e['antiga_compatibilidade']} | Fabricante: {e['antigo_fabricante']} | Data Fabricação: {e['antiga_data_fabricacao']} | Parte: {e['antiga_parte']}")
+                print("="*50)
+                print(f"DEPOIS DA ALTERAÇÃO: \n {e['data_hora']} | {e['codigo']} | {e['produto']:15} | Qtd: {e['nova_qtd']} | Preço: ${e['preco']} | Tam: {e['tamanho']} | País: {e['pais']} | Compatibilidade: {e['compatibilidade']} | Fabricante: {e['fabricante']} | Data Fabricação: {e['data_fabricacao']} | Parte: {e['parte']}")
+            print("="*50)
+            slp(1)
 
 def explicarCodigo():
     print("\n--- COMO FUNCIONA O CÓDIGO DO PRODUTO ---")
     slp(0.5)
-    print("O código é gerado automaticamente:")
-    slp(0.3)
-    print("1. [XX] - Primeiras 2 letras do nome")
-    print("2. [-]  - Separador")
-    print("3. [S]  - Letra inicial do Setor (A=Interno, B=Lataria, C=Mecanica, D=Eletrico)")
-    print("4. [T]  - Letra do Tamanho (P, M, G)")
-    print("5. [PP] - Primeiras 2 letras do País")
-    slp(0.3)
-    print("Exemplo: BA-DMBR -> Bateria, Setor D (Elét.), Médio, BRasil")
+    print(f"{cores['azul']}O código é gerado automaticamente:{cores['reset']}")
+    slp(0.5)
+    print(f"{cores['reverse']}1. [XX] - Primeiras 2 letras do nome{cores['reset']}")
+    slp(0.5)
+    print(f"{cores['reverse']}2. [-]  - Separador{cores['reset']}")
+    slp(0.5)
+    print(f"{cores['reverse']}3. [S]  - Letra inicial do Setor (A=Interno, B=Lataria, C=Mecanica, D=Eletrico){cores['reset']}")
+    slp(0.5)
+    print(f"{cores['reverse']}4. [T]  - Letra do Tamanho (P, M, G){cores['reset']}")
+    slp(0.5)
+    print(f"{cores['reverse']}5. [PP] - Primeiras 2 letras do País{cores['reset']}")
+    slp(0.5)
+    print(f"{cores['reverse']}Exemplo: BA-DMBR -> Bateria, Setor D (Elét.), Médio, BRasil{cores['reset']}")
     print("-" * 40)
+    slp(2)
 
 
 
@@ -325,21 +433,22 @@ while True:
                 adicionarProduto(setor_atual)
             elif op == "3":
                 removerProduto(setor_atual)
+                slp(1)
             elif op == "4":
                 atualizarProduto(setor_atual)
             elif op == "5":
                 listarEstoque()
             elif op == "6":
-                listarEntradas()
+                listarMovimentacoes() #TODO
             elif op == "7":
                 explicarCodigo()
             elif op == "0":
-                print("Saindo do sistema...")
+                print(f"{cores['vermelho']}Saindo do sistema...{cores['reset']}")
                 slp(1)
                 break
             else:
-                print("Opção inválida!")
+                print(f"{cores['vermelho']}Opção inválida!{cores['reset']}")
     else:
-        cont = input("Deseja tentar novamente? (s/n): ").lower()
+        cont = input(f"{cores['amarelo']}Deseja tentar novamente? {cores['reset']} ({cores['verde']}s{cores['reset']}/{cores['vermelho']}n{cores['reset']}): {cores['reset']}").lower()
         if cont != 's':
             break

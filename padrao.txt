@@ -25,10 +25,13 @@ Exemplo: BA-DMBR
 
 
 * MUDANÇAS A SEREM FEITAS  {
-  - Adicionar campo de setor;
-  - Adicionar campo de fabricante;
-  - Adicionar campo data de fabricação;
-  - Adicionar campo de parte do carro (Ex: Painel, carroceria, suspensao, etc);
-  - Adicionar na função de remover estoque verificação de setor;
-  - Adaptar os códigos para um novo padrão.
+  - Adicionar campo de setor; V
+  - Adicionar campo de fabricante; V
+  - Adicionar campo data de fabricação; V
+  - Adicionar campo de parte do carro (Ex: Painel, carroceria, suspensao, etc); V
+  - Adicionar na função de remover estoque verificação de setor; V
+  - Adaptar os códigos para um novo padrão. V
+  - Fazer modularizacao do codigo
+  - Fazer alteracao permanente no codigo
+  - 
 }
