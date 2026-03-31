@@ -1,3 +1,4 @@
+
 def gerarCodigo(produto, setor, tamanho, pais):
     setor = setor.lower()
     if setor == "interno":

@@ -1,7 +1,6 @@
 from time import sleep as slp
 from datetime import datetime, date, timedelta
-import arquivosjson, gerarcodigo, logins, historico, explicar, manipulacaoProdutos, menu, verificarestoque
-
+import logins, historico, explicar, manipulacaoProdutos, menu, verificarestoque
 cores ={
     'vermelho': '\033[31m',
     'verde': '\033[32m',

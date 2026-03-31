@@ -2,7 +2,6 @@ import arquivosjson
 from time import sleep as slp
 estoque = arquivosjson.carregar_json('banco.json', {})
 logins = arquivosjson.carregar_json('logins.json', {})
-
 cores ={
     'vermelho': '\033[31m',
     'verde': '\033[32m',

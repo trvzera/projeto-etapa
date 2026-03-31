@@ -8,7 +8,6 @@ cores ={
     'reset': '\033[m',
     'reverse': '\033[7m'
 }
-
 def explicarCodigo():
     print("\n--- COMO FUNCIONA O CÓDIGO DO PRODUTO ---")
     slp(0.5)

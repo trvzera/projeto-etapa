@@ -8,7 +8,6 @@ cores ={
     'reset': '\033[m',
     'reverse': '\033[7m'
 }
-
 def menu(setor):
     print(f"\nBem vindo ao sistema de estoque! (USUÁRIO: {cores['amarelo']}{setor.upper()}{cores['reset']})")
     print("--- MENU ---")

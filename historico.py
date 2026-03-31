@@ -1,9 +1,7 @@
 from time import sleep as slp
-
 entradas = []
 saidas = []
 alteracoes = []
-
 cores ={
     'vermelho': '\033[31m',
     'verde': '\033[32m',

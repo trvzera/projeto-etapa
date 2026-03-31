@@ -1,7 +1,6 @@
 import arquivosjson, historico, gerarcodigo
 from time import sleep as slp 
 from datetime import datetime
-
 estoque = arquivosjson.carregar_json('banco.json', {})
 logins = arquivosjson.carregar_json('logins.json', {})
 

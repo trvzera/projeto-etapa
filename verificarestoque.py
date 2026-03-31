@@ -62,7 +62,6 @@ def consultarEstoque():
         print(f"{cores['vermelho']}Produto não encontrado!{cores['reset']}")
     slp(1)
     return
-
 def listarEstoque():
     print("\n" + "="*50)
     print("ESTOQUE ATUAL".center(50))
